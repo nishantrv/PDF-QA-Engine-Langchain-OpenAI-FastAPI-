@@ -32,16 +32,19 @@ This project is a **FastAPI-based Question Answering (QA) Engine** that allows u
 ---
 
 ## 📂 Folder Structure
+```
 .
-├── app.py                  # Main FastAPI application
-├── requirements.txt        # Project dependencies
-├── setup.py                # Python package setup file
-├── .env                    # Environment variables (e.g., OpenAI API Key)
+├── app.py              # FastAPI backend application
+├── requirements.txt    # Project dependencies
+├── setup.py            # Python package setup
+├── .env                # Environment variables (e.g., OpenAI API Key)
 ├── templates/
-│   └── index.html          # Jinja2 template (Frontend HTML page)
+│   └── index.html      # Jinja2 HTML frontend
 ├── static/
-│   ├── docs/               # Uploaded PDFs are stored here
-│   └── output/             # Generated QA CSV files stored here
-├── src/
-│   └── helper.py           # llm_pipeline function for processing PDFs
+│   ├── docs/           # Uploaded PDFs storage
+│   └── output/         # Generated QA CSV files
+└── src/
+    └── helper.py       # LLM pipeline and QA logic
+```
+
 
