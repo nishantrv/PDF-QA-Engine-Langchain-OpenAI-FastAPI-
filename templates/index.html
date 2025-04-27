@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Question Answer Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 90%;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Upload PDF and Ask</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="pdf_files" name="pdf_files" accept=".pdf" required>
+        <br>
+        <button type="submit">Upload PDF</button>
+    </form>
+
+    <form id="analyzeForm" style="display:none; margin-top:20px;">
+        <input type="hidden" id="pdf_filename" name="pdf_filename">
+        <button type="submit">Generate QA CSV</button>
+    </form>
+
+    <div id="result" style="margin-top:20px;"></div>
+</div>
+
+<script>
+    const uploadForm = document.getElementById('uploadForm');
+    const analyzeForm = document.getElementById('analyzeForm');
+    const resultDiv = document.getElementById('result');
+
+    uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(uploadForm);
+
+        const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        document.getElementById('pdf_filename').value = data.pdf_filename;
+        analyzeForm.style.display = "block";
+        resultDiv.innerHTML = "PDF uploaded successfully. Ready to generate QA CSV.";
+    });
+
+    analyzeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(analyzeForm);
+
+        const response = await fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        resultDiv.innerHTML = `<a href="/${data.output_file}" download>Download QA CSV</a>`;
+    });
+</script>
+
+</body>
+</html>
